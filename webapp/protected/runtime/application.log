@@ -1,0 +1,27 @@
+2014/11/26 16:05:57 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "gii".' in /Volumes/Data/projects/bus-ticket-booking/framework/web/CWebApplication.php:286
+Stack trace:
+#0 /Volumes/Data/projects/bus-ticket-booking/framework/web/CWebApplication.php(141): CWebApplication->runController('gii')
+#1 /Volumes/Data/projects/bus-ticket-booking/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#2 /Volumes/Data/projects/bus-ticket-booking/webapp/index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/ticket/index.php?r=gii
+---
+2014/11/26 16:07:13 [error] [exception.CException] exception 'CException' with message 'Please configure the "password" property of the "gii" module.' in /Volumes/Data/projects/bus-ticket-booking/framework/gii/components/UserIdentity.php:13
+Stack trace:
+#0 /Volumes/Data/projects/bus-ticket-booking/framework/gii/models/LoginForm.php(26): UserIdentity->authenticate()
+#1 /Volumes/Data/projects/bus-ticket-booking/framework/validators/CInlineValidator.php(42): LoginForm->authenticate('password', Array)
+#2 /Volumes/Data/projects/bus-ticket-booking/framework/validators/CValidator.php(213): CInlineValidator->validateAttribute(Object(LoginForm), 'password')
+#3 /Volumes/Data/projects/bus-ticket-booking/framework/base/CModel.php(159): CValidator->validate(Object(LoginForm), NULL)
+#4 /Volumes/Data/projects/bus-ticket-booking/framework/gii/controllers/DefaultController.php(43): CModel->validate()
+#5 /Volumes/Data/projects/bus-ticket-booking/framework/web/actions/CInlineAction.php(49): DefaultController->actionLogin()
+#6 /Volumes/Data/projects/bus-ticket-booking/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#7 /Volumes/Data/projects/bus-ticket-booking/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#8 /Volumes/Data/projects/bus-ticket-booking/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 /Volumes/Data/projects/bus-ticket-booking/framework/web/CWebApplication.php(282): CController->run('login')
+#10 /Volumes/Data/projects/bus-ticket-booking/framework/web/CWebApplication.php(141): CWebApplication->runController('gii/default/log...')
+#11 /Volumes/Data/projects/bus-ticket-booking/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#12 /Volumes/Data/projects/bus-ticket-booking/webapp/index.php(13): CApplication->run()
+#13 {main}
+REQUEST_URI=/ticket/index.php?r=gii/default/login
+HTTP_REFERER=http://localhost/ticket/index.php?r=gii/default/login
+---
