@@ -1,0 +1,5 @@
+webapp/assets/
+.settings/
+.project
+.buildpath
+webapp/protected/runtime/
