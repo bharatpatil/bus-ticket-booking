@@ -1,37 +1,28 @@
 <?php
 
 /**
- * This is the model class for table "route".
+ * This is the model class for table "city".
  *
- * The followings are the available columns in table 'route':
+ * The followings are the available columns in table 'city':
  * @property string $id
- * @property string $from
- * @property string $to
- * @property integer $journey_duration
- * @property integer $distance
+ * @property string $name
  * @property string $added_by
  * @property string $added_on
  * @property string $updated_by
  * @property string $updated_on
- * @property integer $is_available
  *
  * The followings are the available model relations:
- * @property Booking[] $bookings
- * @property Fare[] $fares
- * @property City $from0
- * @property City $to0
- * @property User $addedBy
- * @property User $updatedBy
- * @property Schedule[] $schedules
+ * @property Route[] $routes
+ * @property Route[] $routes1
  */
-class Route extends CActiveRecord
+class City extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'route';
+		return 'city';
 	}
 
 	/**
@@ -42,13 +33,12 @@ class Route extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('from, to, journey_duration', 'required'),
-			array('journey_duration, distance, is_available', 'numerical', 'integerOnly'=>true),
-			array('from, to, added_by, updated_by', 'length', 'max'=>20),
+			array('name', 'length', 'max'=>512),
+			array('added_by, updated_by', 'length', 'max'=>20),
 			array('added_on, updated_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, from, to, journey_duration, distance, added_by, added_on, updated_by, updated_on, is_available', 'safe', 'on'=>'search'),
+			array('id, name, added_by, added_on, updated_by, updated_on', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -60,13 +50,8 @@ class Route extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'bookings' => array(self::HAS_MANY, 'Booking', 'route_id'),
-			'fares' => array(self::HAS_MANY, 'Fare', 'route_id'),
-			'from0' => array(self::BELONGS_TO, 'City', 'from'),
-			'to0' => array(self::BELONGS_TO, 'City', 'to'),
-			'addedBy' => array(self::BELONGS_TO, 'User', 'added_by'),
-			'updatedBy' => array(self::BELONGS_TO, 'User', 'updated_by'),
-			'schedules' => array(self::HAS_MANY, 'Schedule', 'route_id'),
+			'routes' => array(self::HAS_MANY, 'Route', 'from'),
+			'routes1' => array(self::HAS_MANY, 'Route', 'to'),
 		);
 	}
 
@@ -77,15 +62,11 @@ class Route extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'from' => 'From',
-			'to' => 'To',
-			'journey_duration' => 'Journey Duration',
-			'distance' => 'Distance',
+			'name' => 'Name',
 			'added_by' => 'Added By',
 			'added_on' => 'Added On',
 			'updated_by' => 'Updated By',
 			'updated_on' => 'Updated On',
-			'is_available' => 'Is Available',
 		);
 	}
 
@@ -108,15 +89,11 @@ class Route extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
-		$criteria->compare('from',$this->from,true);
-		$criteria->compare('to',$this->to,true);
-		$criteria->compare('journey_duration',$this->journey_duration);
-		$criteria->compare('distance',$this->distance);
+		$criteria->compare('name',$this->name,true);
 		$criteria->compare('added_by',$this->added_by,true);
 		$criteria->compare('added_on',$this->added_on,true);
 		$criteria->compare('updated_by',$this->updated_by,true);
 		$criteria->compare('updated_on',$this->updated_on,true);
-		$criteria->compare('is_available',$this->is_available);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -127,7 +104,7 @@ class Route extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Route the static model class
+	 * @return City the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
