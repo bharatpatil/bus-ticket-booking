@@ -27,9 +27,63 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		// renders the view file 'protected/views/site/index.php'
-		// using the default layout 'protected/views/layouts/main.php'
-		$this->render('index');
+		$tableData = null;
+		
+		$sql = "select s.id,
+					tc.name,
+					s.`departure_time`,
+					cs.name as source,
+					cd.name as destination,
+					(case when (b.type = 0) THEN 'Non-AC' ELSE 'AC' END) as type,
+					f.fare_amount, r.distance
+					from
+					`schedule` s
+					inner join route r on s.route_id = r.id
+					inner join fare f on f.route_id = s.route_id
+					inner join city cs on cs.id = r.source_city
+					inner join city cd on cd.id = r.destination_city
+					inner join bus_travel_company_mapping btcm on s.`bus_travel_company_mapping_id` = btcm.id
+					inner join travel_company tc on btcm.travel_company_id = tc.id
+					inner join bus b on btcm.bus_id = b.id";
+		
+		$command = Yii::app()->db->createCommand($sql);
+
+		$city_list = City::model()->findAll(array('select'=>'id,name'));
+		$city_list = CHtml::listData($city_list , 'id', 'name');
+		$model=new BusSearch();
+		
+		if(isset($_POST['BusSearch']))
+		{
+			//var_dump($_POST['BusSearch']);
+			$model->attributes=$_POST['BusSearch'];
+			$model->busType = $_POST['BusSearch']['busType'];
+			// validate user input and redirect to the previous page if valid
+			if($model->validate()) {
+				$sql = $sql. ' where ';
+				$sql = $sql. ' r.source_city=:source_city ';
+				$sql = $sql. ' and r.destination_city=:destination_city ';
+				if($model->busType !== null &&  $model->busType !== '') {
+					$sql = $sql. ' and b.type=:type ';
+				}
+				$command = Yii::app()->db->createCommand($sql);
+				$command->bindValue(':source_city',$model->citySource);
+				$command->bindValue(':destination_city',$model->cityDestination);
+				if($model->busType !== null &&  $model->busType !== '') {
+					$command->bindValue(':type',$model->busType);
+				}
+				
+				
+				
+			}
+		}
+		$command = $command->queryAll();
+		$tableData = new CArrayDataProvider($command, array(
+				'keyField' => 'id'
+		));
+		
+		$this->render('index', array('city_list'=>$city_list, 'model'=>$model, 'tableData'=>$tableData));
+		//$this->render('index');
+		
 	}
 
 	/**

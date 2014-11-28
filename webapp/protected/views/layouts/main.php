@@ -14,7 +14,32 @@
 
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
-
+	<style>
+		.mainBox{width:580px; margin:0 auto;}
+		.boxLeft{
+			float:left;
+			margin: 15px 0;
+		}
+		.XXinput {
+			width:150px;
+			padding:3px;
+			font-size:12px;
+			color:#999;
+		}
+		select.XXinput {
+			width:157px;
+		}
+		.switchButton {
+			float:left;
+			margin:35px 10px 0 10px;
+			width:20px;
+		}
+		.Xbutton{width:150px; padding:5px 0; margin-bottom:15px; float:right;background:red; border:none; color:#fff; cursor:pointer;}
+	</style>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+ 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
 
@@ -30,8 +55,8 @@
 		<?php $this->widget('zii.widgets.CMenu',array(
 			'items'=>array(
 				array('label'=>'Home', 'url'=>array('/site/index')),
-				array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
-				array('label'=>'Contact', 'url'=>array('/site/contact')),
+				//array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
+				//array('label'=>'Contact', 'url'=>array('/site/contact')),
 				array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
 				array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
 			),
@@ -48,12 +73,29 @@
 	<div class="clear"></div>
 
 	<div id="footer">
-		Copyright &copy; <?php echo date('Y'); ?> by My Company.<br/>
+		Copyright &copy; <?php echo date('Y'); ?> by Bus Booking.<br/>
 		All Rights Reserved.<br/>
-		<?php echo Yii::powered(); ?>
+		<?php echo 'Powered by Bus Booking';//echo Yii::powered(); ?>
 	</div><!-- footer -->
 
 </div><!-- page -->
-
+ <script type='text/javascript'>
+  $(function() {
+// 	    $( "#txtOnwardCalendar" ).datepicker({ 
+// 		    minDate: 0, 
+// 		    maxDate: "+1M +15D",
+// 		    changeMonth: true,
+// 		    changeYear: true,
+// 		    dateFormat:'yy-mm-dd'
+// 		});
+// 	    $( "#txtReturnCalendar" ).datepicker({ 
+// 		    minDate: 0, 
+// 		    maxDate: "+1M +15D",
+// 		    changeMonth: true,
+// 		    changeYear: true,
+// 		    dateFormat:'yy-mm-dd'
+// 		});
+  });
+  </script>
 </body>
 </html>

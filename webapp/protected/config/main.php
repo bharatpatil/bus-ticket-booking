@@ -53,7 +53,7 @@ return array(
 		// uncomment the following to use a MySQL database
 		// /*
 		'db'=>array(
-			'connectionString' => 'mysql:host=127.0.0.1;dbname=bus_book',
+			'connectionString' => 'mysql:host=192.168.122.112;dbname=bus_book',
 			'emulatePrepare' => true,
 			'username' => 'root',
 			'password' => '',
