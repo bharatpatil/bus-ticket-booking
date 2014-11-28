@@ -5,7 +5,7 @@
  *
  * The followings are the available columns in table 'fare':
  * @property string $id
- * @property string $bus_id
+ * @property string $bus_travel_company_mapping_id
  * @property string $route_id
  * @property string $fare_type
  * @property string $fare_amount
@@ -17,7 +17,7 @@
  * The followings are the available model relations:
  * @property User $addedBy
  * @property User $updatedBy
- * @property Bus $bus
+ * @property BusTravelCompanyMapping $busTravelCompanyMapping
  * @property Route $route
  */
 class Fare extends CActiveRecord
@@ -38,13 +38,13 @@ class Fare extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('bus_id, route_id, fare_type, fare_amount', 'required'),
-			array('bus_id, route_id, fare_amount, added_by, updated_by', 'length', 'max'=>20),
+			array('bus_travel_company_mapping_id, route_id, fare_type, fare_amount', 'required'),
+			array('bus_travel_company_mapping_id, route_id, fare_amount, added_by, updated_by', 'length', 'max'=>20),
 			array('fare_type', 'length', 'max'=>1),
 			array('added_on, updated_on', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, bus_id, route_id, fare_type, fare_amount, added_by, added_on, updated_by, updated_on', 'safe', 'on'=>'search'),
+			array('id, bus_travel_company_mapping_id, route_id, fare_type, fare_amount, added_by, added_on, updated_by, updated_on', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -58,7 +58,7 @@ class Fare extends CActiveRecord
 		return array(
 			'addedBy' => array(self::BELONGS_TO, 'User', 'added_by'),
 			'updatedBy' => array(self::BELONGS_TO, 'User', 'updated_by'),
-			'bus' => array(self::BELONGS_TO, 'Bus', 'bus_id'),
+			'busTravelCompanyMapping' => array(self::BELONGS_TO, 'BusTravelCompanyMapping', 'bus_travel_company_mapping_id'),
 			'route' => array(self::BELONGS_TO, 'Route', 'route_id'),
 		);
 	}
@@ -70,7 +70,7 @@ class Fare extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'bus_id' => 'Bus',
+			'bus_travel_company_mapping_id' => 'Bus Travel Company Mapping',
 			'route_id' => 'Route',
 			'fare_type' => 'Fare Type',
 			'fare_amount' => 'Fare Amount',
@@ -100,7 +100,7 @@ class Fare extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
-		$criteria->compare('bus_id',$this->bus_id,true);
+		$criteria->compare('bus_travel_company_mapping_id',$this->bus_travel_company_mapping_id,true);
 		$criteria->compare('route_id',$this->route_id,true);
 		$criteria->compare('fare_type',$this->fare_type,true);
 		$criteria->compare('fare_amount',$this->fare_amount,true);
