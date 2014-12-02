@@ -1,6 +1,6 @@
 <?php
 
-class BusController extends Controller
+class RouteController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -51,8 +51,12 @@ class BusController extends Controller
 	 */
 	public function actionView($id)
 	{
+		$model = $this->loadModel($id);
+		$sourceCity = $model->sourceCity;
+		$destinationCity = $model->destinationCity;
+		
 		$this->render('view',array(
-			'model'=>$this->loadModel($id),
+			'model'=>$this->loadModel($id),'sourceCity'=>$sourceCity,'destinationCity'=>$destinationCity
 		));
 	}
 
@@ -62,20 +66,22 @@ class BusController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Bus;
+		$model=new Route;
+		$city_list = City::model()->findAll(array('select'=>'id,name'));
+		$city_list = CHtml::listData($city_list , 'id', 'name');
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Bus']))
+		if(isset($_POST['Route']))
 		{
-			$model->attributes=$_POST['Bus'];
+			$model->attributes=$_POST['Route'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('create',array(
-			'model'=>$model,
+			'model'=>$model, 'city_list'=>$city_list
 		));
 	}
 
@@ -91,9 +97,9 @@ class BusController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Bus']))
+		if(isset($_POST['Route']))
 		{
-			$model->attributes=$_POST['Bus'];
+			$model->attributes=$_POST['Route'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -122,9 +128,9 @@ class BusController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Bus');
+		$dataProvider=new CActiveDataProvider('Route');
 		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
+			'dataProvider'=>$dataProvider
 		));
 	}
 
@@ -133,10 +139,10 @@ class BusController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Bus('search');
+		$model=new Route('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Bus']))
-			$model->attributes=$_GET['Bus'];
+		if(isset($_GET['Route']))
+			$model->attributes=$_GET['Route'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -147,12 +153,12 @@ class BusController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Bus the loaded model
+	 * @return Route the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=Bus::model()->findByPk($id);
+		$model=Route::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -160,11 +166,11 @@ class BusController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Bus $model the model to be validated
+	 * @param Route $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='bus-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='route-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

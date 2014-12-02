@@ -14,6 +14,7 @@
  * @property string $updated_by
  * @property string $updated_on
  * @property integer $is_available
+ * @property string $name
  *
  * The followings are the available model relations:
  * @property Booking[] $bookings
@@ -37,15 +38,31 @@ class Route extends CActiveRecord
 	/**
 	 * @return array validation rules for model attributes.
 	 */
+		
 	public function rules()
 	{
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
+		$userId = Yii::app()->user->id;
+		$timestamp = new CDbExpression('NOW()');
 		return array(
-			array('source_city, destination_city, journey_duration', 'required'),
+			array('source_city, destination_city, journey_duration,name', 'required'),
 			array('journey_duration, distance, is_available', 'numerical', 'integerOnly'=>true),
-			array('source_city, destination_city, added_by, updated_by', 'length', 'max'=>20),
-			array('added_on, updated_on', 'safe'),
+			array('source_city, destination_city', 'length', 'max'=>20),
+			array('name', 'length', 'max'=>255),
+			// record info
+			array('updated_on','default',
+					'value'=>$timestamp,
+					'setOnEmpty'=>false,'on'=>'update'),
+			array('added_on,updated_on','default',
+					'value'=>$timestamp,
+					'setOnEmpty'=>false,'on'=>'insert'),
+			array('added_by,updated_by','default',
+					'value'=>$userId,
+					'setOnEmpty'=>false,'on'=>'insert'),
+			array('updated_by','default',
+					'value'=>$userId,
+					'setOnEmpty'=>false,'on'=>'update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, source_city, destination_city, journey_duration, distance, added_by, added_on, updated_by, updated_on, is_available', 'safe', 'on'=>'search'),
@@ -79,13 +96,14 @@ class Route extends CActiveRecord
 			'id' => 'ID',
 			'source_city' => 'Source City',
 			'destination_city' => 'Destination City',
-			'journey_duration' => 'Journey Duration',
-			'distance' => 'Distance',
+			'journey_duration' => 'Journey Duration (Min.)',
+			'distance' => 'Distance (KM)',
 			'added_by' => 'Added By',
 			'added_on' => 'Added On',
 			'updated_by' => 'Updated By',
 			'updated_on' => 'Updated On',
 			'is_available' => 'Is Available',
+			'name' => 'Route Name',
 		);
 	}
 
@@ -117,7 +135,8 @@ class Route extends CActiveRecord
 		$criteria->compare('updated_by',$this->updated_by,true);
 		$criteria->compare('updated_on',$this->updated_on,true);
 		$criteria->compare('is_available',$this->is_available);
-
+		$criteria->compare('name',$this->name,true);
+		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

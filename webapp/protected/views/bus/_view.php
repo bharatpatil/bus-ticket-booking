@@ -10,7 +10,7 @@
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('type')); ?>:</b>
-	<?php echo CHtml::encode($data->type); ?>
+	<?php echo CHtml::encode($data->type == '0')?"Non-AC":"AC"; ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('arrangement')); ?>:</b>
@@ -26,7 +26,7 @@
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('is_available')); ?>:</b>
-	<?php echo CHtml::encode($data->is_available); ?>
+	<?php echo CHtml::encode($data->is_available == '0')?"Undre Maintanance":($data->is_available == '1')?"Available":"Not Available"; ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('make')); ?>:</b>

@@ -43,12 +43,25 @@ class Bus extends CActiveRecord
 	{
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
+		$userId = Yii::app()->user->id;
+		$timestamp = new CDbExpression('NOW()');
 		return array(
-			array('type, arrangement', 'required'),
+			array('type, arrangement, capacity, is_available, registration_number', 'required'),
 			array('type, arrangement, capacity, is_available', 'numerical', 'integerOnly'=>true),
 			array('registration_number, make, model', 'length', 'max'=>255),
-			array('added_by, updated_by', 'length', 'max'=>20),
-			array('added_on, updated_on', 'safe'),
+			// record info
+			array('updated_on','default',
+					'value'=>$timestamp,
+					'setOnEmpty'=>false,'on'=>'update'),
+			array('added_on,updated_on','default',
+					'value'=>$timestamp,
+					'setOnEmpty'=>false,'on'=>'insert'),
+			array('added_by,updated_by','default',
+					'value'=>$userId,
+					'setOnEmpty'=>false,'on'=>'insert'),
+			array('updated_by','default',
+					'value'=>$userId,
+					'setOnEmpty'=>false,'on'=>'update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, type, arrangement, registration_number, capacity, is_available, make, model, added_by, added_on, updated_by, updated_on', 'safe', 'on'=>'search'),
@@ -80,13 +93,13 @@ class Bus extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'type' => 'Type',
-			'arrangement' => 'Arrangement',
-			'registration_number' => 'Registration Number',
+			'type' => 'Bus Type',
+			'arrangement' => 'Seat Arrangement',
+			'registration_number' => 'Registration Number (Police reg. number)',
 			'capacity' => 'Capacity',
 			'is_available' => 'Is Available',
-			'make' => 'Make',
-			'model' => 'Model',
+			'make' => 'Bus Make (Ex. Ashok Layland, Volvo)',
+			'model' => 'Bus Model',
 			'added_by' => 'Added By',
 			'added_on' => 'Added On',
 			'updated_by' => 'Updated By',

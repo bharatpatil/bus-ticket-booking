@@ -39,10 +39,25 @@ class Schedule extends CActiveRecord
 	{
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
+		$userId = Yii::app()->user->id;
+		$timestamp = new CDbExpression('NOW()');
 		return array(
 			array('bus_travel_company_mapping_id, route_id, frequency_id, departure_time', 'required'),
-			array('bus_travel_company_mapping_id, route_id, frequency_id, added_by, updated_by', 'length', 'max'=>20),
-			array('valid_until, added_on, updated_on', 'safe'),
+			array('bus_travel_company_mapping_id, route_id, frequency_id', 'length', 'max'=>20),
+			array('valid_until', 'safe'),
+				// record info
+				array('updated_on','default',
+						'value'=>$timestamp,
+						'setOnEmpty'=>false,'on'=>'update'),
+						array('added_on,updated_on','default',
+								'value'=>$timestamp,
+								'setOnEmpty'=>false,'on'=>'insert'),
+								array('added_by,updated_by','default',
+										'value'=>$userId,
+										'setOnEmpty'=>false,'on'=>'insert'),
+										array('updated_by','default',
+												'value'=>$userId,
+												'setOnEmpty'=>false,'on'=>'update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, bus_travel_company_mapping_id, route_id, frequency_id, departure_time, valid_until, added_by, added_on, updated_by, updated_on', 'safe', 'on'=>'search'),
@@ -72,10 +87,10 @@ class Schedule extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'bus_travel_company_mapping_id' => 'Bus Travel Company Mapping',
+			'bus_travel_company_mapping_id' => 'Bus',
 			'route_id' => 'Route',
 			'frequency_id' => 'Frequency',
-			'departure_time' => 'Departure Time',
+			'departure_time' => 'Departure Time (HH:MM:SS)',
 			'valid_until' => 'Valid Until',
 			'added_by' => 'Added By',
 			'added_on' => 'Added On',

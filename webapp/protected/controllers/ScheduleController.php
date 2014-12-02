@@ -1,6 +1,6 @@
 <?php
 
-class BusController extends Controller
+class ScheduleController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -62,20 +62,37 @@ class BusController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Bus;
+		$model=new Schedule;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
+		$sql = "select r.id, concat(c1.name,' to ' ,c2.name) as route_name from route r 
+					inner join  city c1 on r.source_city = c1.id
+					inner join  city c2 on r.destination_city = c2.id";
+		
+		$command = Yii::app()->db->createCommand($sql);
+		$routeList = $command->queryAll();
+		$routeList=CHtml::listData($routeList,'id','route_name');
+		
+		
+		$sql = "SELECT concat(tc.name, '-' ,b.registration_number) as bus_name, btcm.id FROM bus_travel_company_mapping btcm
+					inner join bus b on btcm.bus_id = b.id
+					inner join travel_company tc on btcm.travel_company_id = tc.id";
+		
+		$command = Yii::app()->db->createCommand($sql);
+		$busList = $command->queryAll();
+		$busList=CHtml::listData($busList,'id','bus_name');
+		
 
-		if(isset($_POST['Bus']))
+		if(isset($_POST['Schedule']))
 		{
-			$model->attributes=$_POST['Bus'];
+			$model->attributes=$_POST['Schedule'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('create',array(
-			'model'=>$model,
+			'model'=>$model,'routeList'=>$routeList,'busList'=>$busList
 		));
 	}
 
@@ -91,9 +108,9 @@ class BusController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Bus']))
+		if(isset($_POST['Schedule']))
 		{
-			$model->attributes=$_POST['Bus'];
+			$model->attributes=$_POST['Schedule'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -122,7 +139,7 @@ class BusController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Bus');
+		$dataProvider=new CActiveDataProvider('Schedule');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -133,10 +150,10 @@ class BusController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Bus('search');
+		$model=new Schedule('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Bus']))
-			$model->attributes=$_GET['Bus'];
+		if(isset($_GET['Schedule']))
+			$model->attributes=$_GET['Schedule'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -147,12 +164,12 @@ class BusController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Bus the loaded model
+	 * @return Schedule the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=Bus::model()->findByPk($id);
+		$model=Schedule::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -160,11 +177,11 @@ class BusController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Bus $model the model to be validated
+	 * @param Schedule $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='bus-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='schedule-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

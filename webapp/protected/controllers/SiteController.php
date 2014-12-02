@@ -39,7 +39,7 @@ class SiteController extends Controller
 					from
 					`schedule` s
 					inner join route r on s.route_id = r.id
-					inner join fare f on f.route_id = s.route_id
+					left outer join fare f on f.route_id = s.route_id
 					inner join city cs on cs.id = r.source_city
 					inner join city cd on cd.id = r.destination_city
 					inner join bus_travel_company_mapping btcm on s.`bus_travel_company_mapping_id` = btcm.id

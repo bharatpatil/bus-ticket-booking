@@ -21,13 +21,33 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'type'); ?>
-		<?php echo $form->textField($model,'type'); ?>
+		<?php echo $form->dropDownList($model, 'type', 
+				array(
+					'0'=>'AC',
+					'1'=>'Non-AC'
+				), array(
+					'prompt'=>'Select Type',
+					'id'=>'txtSource',
+					'class'=>'XXinput'
+		));  ?>
+		
+		<?php //echo $form->textField($model,'type'); ?>
+		
 		<?php echo $form->error($model,'type'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'arrangement'); ?>
-		<?php echo $form->textField($model,'arrangement'); ?>
+		<?php echo $form->dropDownList($model, 'arrangement', 
+				array(
+					'0'=>'Seatign',
+					'1'=>'Sleeper'		
+				), array(
+					'prompt'=>'Select Type',
+					'id'=>'txtSource',
+					'class'=>'XXinput'
+		));  ?>
+		<?php //echo $form->textField($model,'arrangement'); ?>
 		<?php echo $form->error($model,'arrangement'); ?>
 	</div>
 
@@ -39,13 +59,32 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'capacity'); ?>
-		<?php echo $form->textField($model,'capacity'); ?>
+		<?php echo $form->dropDownList($model, 'capacity', 
+				array(
+					'15'=>'15 seater',
+					'30'=>'30 seater'		
+				), array(
+					'prompt'=>'Select Type',
+					'id'=>'txtSource',
+					'class'=>'XXinput'
+		));  ?>
+		<?php //echo $form->textField($model,'capacity'); ?>
 		<?php echo $form->error($model,'capacity'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'is_available'); ?>
-		<?php echo $form->textField($model,'is_available'); ?>
+		<?php echo $form->dropDownList($model, 'is_available', 
+				array(
+					'0'=>'Undre Maintanance',
+					'1'=>'Available',
+					'2'=>'Not Available'		
+				), array(
+					'prompt'=>'Select Type',
+					'id'=>'txtSource',
+					'class'=>'XXinput'
+		));  ?>
+		<?php //echo $form->textField($model,'is_available'); ?>
 		<?php echo $form->error($model,'is_available'); ?>
 	</div>
 
@@ -61,29 +100,7 @@
 		<?php echo $form->error($model,'model'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'added_by'); ?>
-		<?php echo $form->textField($model,'added_by',array('size'=>20,'maxlength'=>20)); ?>
-		<?php echo $form->error($model,'added_by'); ?>
-	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'added_on'); ?>
-		<?php echo $form->textField($model,'added_on'); ?>
-		<?php echo $form->error($model,'added_on'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'updated_by'); ?>
-		<?php echo $form->textField($model,'updated_by',array('size'=>20,'maxlength'=>20)); ?>
-		<?php echo $form->error($model,'updated_by'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'updated_on'); ?>
-		<?php echo $form->textField($model,'updated_on'); ?>
-		<?php echo $form->error($model,'updated_on'); ?>
-	</div>
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
